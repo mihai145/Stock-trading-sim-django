@@ -1,0 +1,82 @@
+{% extends "stocks/layout.html" %}
+{% load static %}
+
+{% block body %}
+<h1 class="display-1 text-center my-5">Hello, {{user.username}}!</h1>
+
+<div class="row">
+  <div class="my-2 col-12 col-lg-6">
+    <div class="card bg-dark profile-card">
+      <div class="card-header">
+        {{user.username}}
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item bg-dark">Available to invest: <span id="capital">{{user.capital}}</span>$</li>
+        <li class="list-group-item bg-dark">Total amount of bought stocks: {{user.total_invested}}$</li>
+        <li class="list-group-item bg-dark">Total amount of sold stocks: {{user.total_sold}}$</li>
+      </ul>
+    </div>
+  </div>
+  <div class="my-2 p-2 col-12 col-lg-6 rounded bg-dark profile-card" id="invest-card">
+    <h3 class="my-2">Add funds to the investment account</h3>
+    <input type="numer" min="1" placeholder="10" id="amount-invested">
+    <span>$</span>
+    <hr>
+    <button class="btn btn-success" id="invest-button">Add!</button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 col-lg-8">
+    <h4 class="display-4">All transactions</h4>
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Stock</th>
+          <th scope="col">Type</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for transaction in user.transactions.all %}
+        <tr>
+          <td>{{transaction.ticker}}</td>
+          {% if transaction.quantity|truncatechars:1 == "…" %}
+          <td>Sell</td>
+          {% else %}
+          <td>Buy</td>
+          {% endif %}
+          <td>{{transaction.quantity}}</td>
+          <td>{{transaction.sum}}$</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12 col-lg-4">
+    <h4 class="display-4">Currently owned stocks</h4>
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Stock</th>
+          <th scope="col">No. of shares</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for stock in user.stocks_owned.all %}
+        {% if stock.quantity > 0%}
+        <tr>
+          <td>{{stock.ticker}}</td>
+          <td>{{stock.quantity}}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="{% static 'stocks/invest.js' %}"></script>
+
+{% endblock %}

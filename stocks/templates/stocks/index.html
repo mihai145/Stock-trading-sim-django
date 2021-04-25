@@ -1,0 +1,22 @@
+{% extends "stocks/layout.html" %}
+{% load static %}
+
+{% block body %}
+<h1 class="display-1 text-center my-5">Hello, world of traders!</h1>
+
+<div class="row">
+    {% for stock in stocks %}
+    <div class="col-12 col-lg-4">
+        <div class="card bg-dark m-3">
+            <h5 class="card-header">{{stock.symbol}}</h5>
+            <div class="card-body">
+                <h5 class="card-title card-content">{{stock.name}}</h5>
+                <hr>
+                <a href="{% url 'stock_view' stock.symbol %}" class="btn btn-success">Take me to {{stock.symbol}}</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

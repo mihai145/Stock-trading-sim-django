@@ -1,0 +1,31 @@
+{% extends "stocks/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+<h1 class="display-1">Register</h1>
+
+{% if message %}
+<div>{{ message }}</div>
+{% endif %}
+
+<form action="{% url 'register' %}" method="post">
+    {% csrf_token %}
+    <div class="my-3 form-group">
+        <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+    </div>
+    <div class="my-3 form-group">
+        <input class="form-control" type="email" name="email" placeholder="Email Address">
+    </div>
+    <div class="my-3 form-group">
+        <input class="form-control" type="password" name="password" placeholder="Password">
+    </div>
+    <div class="my-3 form-group">
+        <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+    </div>
+    <input class="my-3 btn btn-success" type="submit" value="Register">
+</form>
+
+Already have an account? <a class="text-success" href="{% url 'login' %}">Log In here.</a>
+
+{% endblock %}

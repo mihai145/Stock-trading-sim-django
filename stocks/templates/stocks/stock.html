@@ -1,0 +1,53 @@
+{% extends "stocks/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+{% if h %}
+<h1 class="display-1 text-center my-5">{{symbol}}</h1>
+
+<div class="card bg-dark">
+    <div class="card-body">
+        <h5 class="card-title"><span id="ticker">{{symbol}}</span></h5>
+        <p class="card-text">Stock analysis</p>
+    </div>
+    <ul class="list-group">
+        {% if not p%}
+        <li class="list-group-item bg-dark">Current price : <span id="price">{{pc}}</span>$</li>
+        {% else %}
+        <li class="list-group-item bg-dark">Current price : <span id="price">{{p}}</span>$</li>
+        {% endif %}
+        <li class="list-group-item bg-dark">Opening price : {{o}}$</li>
+        <li class="list-group-item bg-dark">Previous close : {{pc}}$</li>
+        <li class="list-group-item bg-dark">High of the day : {{h}}$</li>
+        <li class="list-group-item bg-dark">Low of the day : {{l}}$</li>
+    </ul>
+    <div class="card-body">
+        {% if user.is_authenticated %}
+        <p id="owned">You currently own <span id="owned-amount">{{owned}}</span> share(s) of {{symbol}}</p>
+        <div class="p-2 my-2 border border-success" id="buy-card">
+            <p>Buy stocks of {{symbol}}. We take commission by rounding up the price of one share. One share of
+                {{symbol}} can be bought for <span id="adjusted-buy"></span>$ </p>
+            <input type="number" min="1" placeholder="5" id="bought-stocks">
+            <button class="btn btn-success" id="buy-button">Buy</button>
+        </div>
+        <div class="p-2 my-2 border border-success" id="sell-card">
+            <p>Sell stocks of {{symbol}}. We take commission by rounding down the price of one share. One share of
+                {{symbol}} can be sold for <span id="adjusted-sell"></span>$</p>
+            <input type="number" min="1" placeholder="1" id="sold-stocks">
+            <button class="btn btn-success" id="sell-button">Sell</button>
+        </div>
+        {% else %}
+        <a href="{% url 'login'%}" class="text-success">Authenticate in order to buy or sell {{symbol}}</p>
+            {% endif%}
+    </div>
+</div>
+{% else %}
+<h1 class="display-5 my-5">The ticker {{symbol}} is not known to us. Maybe try something else...</h1>
+{% endif %}
+
+<script src="{% static 'stocks/adjustPrices.js' %}"></script>
+<script src="{% static 'stocks/buy.js' %}"></script>
+<script src="{% static 'stocks/sell.js' %}"></script>
+
+{% endblock %}

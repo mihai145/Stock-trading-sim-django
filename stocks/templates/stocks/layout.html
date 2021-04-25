@@ -1,0 +1,76 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Trading</title>
+
+    <!-- Bootsrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
+    </script>
+
+    <!-- Static -->
+    <link href="{% static 'stocks/styles.css' %}" rel="stylesheet">
+
+</head>
+
+<body class="custom-body">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid mx-5">
+            <a class="navbar-brand" href="#">Stocks</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item mx-lg-3">
+                        <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+                    </li>
+
+                    <form class="d-flex" action="{% url 'stock_search' %}" method="POST">
+                        {% csrf_token %}
+                        {{ searchform.ticker }}
+                        <button class="btn btn-outline-success mx-1" type="submit">Search</button>
+                    </form>
+
+                </ul>
+
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    {% if user.is_authenticated %}
+                    <l1 class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'profile' %}">Logged in as
+                            {{user.username}}</a>
+                    </l1>
+                    <l1 class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>
+                    </l1>
+                    {% else %}
+                    <l1 class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Login</a>
+                    </l1>
+                    <l1 class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'register' %}">Register</a>
+                    </l1>
+                    {% endif %}
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="mx-5">
+        {% block body %}
+        {% endblock %}
+    </div>
+
+</body>
+
+</html>
